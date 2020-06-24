@@ -3,12 +3,13 @@ const HTTP = require("http");
 const PATH = require("path");
 const FS = require("fs");
 const APP = EXP();
-const { stringify } = require("querystring");
 const MDATE = require("moment");
+const { v4: uuidv4 } = require('uuid');
+const { stringify } = require("querystring");
+const { Console } = require("console");
 
 let noteDate = new MDATE().format('MMMM Do YYYY, h:mm:ss a');
-
-console.log(noteDate);
+let noteID = uuidv4();
 
 "use strict";
 APP.use(EXP.urlencoded({ extended: true }));
@@ -39,9 +40,8 @@ APP.get("/:urlTerm", (req, res) => {
 APP
     .route("/api/notes")
     .get((req, res) => {
-
         FS.readFile("./db/db.json", "utf8", (err, data) => {
-            if (err) { console.log("Error -->", err); };
+            if (err) {console.log("ERROR", + err);}
             const notes = JSON.parse(data);
             res.send(notes);
         })
@@ -50,24 +50,29 @@ APP
 
         let noteArry = [];
         FS.readFile("./db/db.json", "utf8", (err, data) => {
-            if (err) { console.log("Error -->", err); };
+            if (err) {console.log(" ERROR -> ;", err);}
             let parsedData = JSON.parse(data);
-            parsedData.forEach(note => {
-                noteArry.push(note);
-            });
+            parsedData.forEach(note => {noteArry.push(note);});
+
             const newNote = req.body;
+
+            if (JSON.stringify(newNote.title) === undefined || JSON.stringify(newNote.title) === "" ){
+                console.log("NO TITLE!");
+                res.sendFile(PATH.join(DIR, "/public/error.html"));
+            };
+            newNote.date = noteDate; // Creates date of note submission
+            newNote.id = noteID; // Creates date of note submission
             noteArry.push(newNote);
-            console.log(noteArry);
 
             FS.writeFile("./db/db.json", JSON.stringify(noteArry), (err) => {
                 if (err) {
-                    console.log("ERROR -->", + err);
+                    console.log("ERROR -->", err);
                 }
                 console.log("Finalized.");
-                console.log(noteArry);
+                // console.log(noteArry);
             })
         });
-        
+
         res.redirect("/api/notes");
     })
 
