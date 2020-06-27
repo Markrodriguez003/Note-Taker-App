@@ -1,1 +1,8 @@
-[{"id":0,"date":"date here","title":"Test Title","note-text":"Test text"},{"id":"ea32bd36-3959-484a-878f-cbc4f846e6af","date":"June 24th 2020, 4:33:38 pm","title":"","text":"fuck"}]
+[
+    {
+        "id": 0,
+        "date": "date here",
+        "title": "Test Title",
+        "text": "Test text"
+    }
+]

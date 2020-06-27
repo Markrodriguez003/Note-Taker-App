@@ -2,16 +2,20 @@ const EXP = require("express");
 const HTTP = require("http");
 const PATH = require("path");
 const FS = require("fs");
+const url = require("url");
 const APP = EXP();
 const MDATE = require("moment");
 const { v4: uuidv4 } = require('uuid');
 const { stringify } = require("querystring");
 const { Console } = require("console");
+const nodemon = require("nodemon");
+var router = EXP.Router();
 
 let noteDate = new MDATE().format('MMMM Do YYYY, h:mm:ss a');
 let noteID = uuidv4();
 
-"use strict";
+
+// "use strict";
 APP.use(EXP.urlencoded({ extended: true }));
 APP.use(EXP.json());
 
@@ -41,39 +45,47 @@ APP
     .route("/api/notes")
     .get((req, res) => {
         FS.readFile("./db/db.json", "utf8", (err, data) => {
-            if (err) {console.log("ERROR", + err);}
+            if (err) {
+                console.log("ERROR", + err);
+                res.status(400).sendFile(PATH.join(DIR, "/public/error.html"));
+            }
             const notes = JSON.parse(data);
             res.send(notes);
         })
     })
     .post((req, res) => {
 
-        let noteArry = [];
-        FS.readFile("./db/db.json", "utf8", (err, data) => {
-            if (err) {console.log(" ERROR -> ;", err);}
-            let parsedData = JSON.parse(data);
-            parsedData.forEach(note => {noteArry.push(note);});
+        const newNote = req.body;
+        if (!newNote.title || newNote.title.trim() === "") {
+            console.log("NO TITLE!");
+            res.status(400).json({ msg: "Please include note title. Note was not recorded!" });
 
-            const newNote = req.body;
+        } else if (!newNote.text || newNote.text.trim() === "") {
+            console.log("NO NOTE TEXT!");
+            res.status(400).json({ msg: "Please include note body text. Note was not recorded!" });
 
-            if (JSON.stringify(newNote.title) === undefined || JSON.stringify(newNote.title) === "" ){
-                console.log("NO TITLE!");
-                res.sendFile(PATH.join(DIR, "/public/error.html"));
-            };
-            newNote.date = noteDate; // Creates date of note submission
-            newNote.id = noteID; // Creates date of note submission
-            noteArry.push(newNote);
+        } else {
+            let noteArry = [];
+            FS.readFile("./db/db.json", "utf8", (err, data) => {
+                if (err) { console.log(" ERROR -> ;", err); }
+                let parsedData = JSON.parse(data);
+                parsedData.forEach(note => { noteArry.push(note); });
 
-            FS.writeFile("./db/db.json", JSON.stringify(noteArry), (err) => {
-                if (err) {
-                    console.log("ERROR -->", err);
-                }
-                console.log("Finalized.");
-                // console.log(noteArry);
-            })
-        });
 
-        res.redirect("/api/notes");
+                newNote.date = noteDate; // Creates date of note submission
+                newNote.id = noteID; // Creates date of note submission
+                noteArry.push(newNote);
+
+                FS.writeFile("./db/db.json", JSON.stringify(noteArry), (err) => {
+                    if (err) {
+                        console.log("ERROR -->", err);
+                    }
+                    console.log("Finalized.");
+                    // console.log(noteArry);
+                })
+            });
+            res.redirect("/");
+        }
     })
 
 APP.listen(SERV_PORT, (req, res) => {
