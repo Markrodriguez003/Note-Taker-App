@@ -19,6 +19,7 @@ APP.use(EXP.json());
 
 const SERV_PORT = process.env.PORT || 3000;
 const DIR = __dirname;
+APP.use(EXP.static(PATH.join(__dirname, 'public')));
 
 APP.get("/", (req, res) => { res.sendFile(PATH.join(DIR, "/public/index.html")); })
 
@@ -29,6 +30,7 @@ APP.get("/:urlTerm", (req, res) => {
     switch (term) {
         case "*":
         case "index":
+        case "home":
             res.sendFile(PATH.join(DIR, "/public/index.html"));
             break;
         case "notes":
