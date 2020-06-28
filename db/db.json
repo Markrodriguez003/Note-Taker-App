@@ -1,8 +1,20 @@
 [
     {
-        "id": 0,
-        "date": "date here",
-        "title": "Test Title",
-        "text": "Test text"
+        "title": "My First note!!!",
+        "text": "This is the text for my 1st note!!!",
+        "id": 1,
+        "date": "June 28th 2020, 11:56:44 am"
+    },
+    {
+        "title": "tHIS IS OFFICIALLY MY 2ND NOTE",
+        "text": "SUP DAWG",
+        "id": 2,
+        "date": "June 28th 2020, 11:57:44 am"
+    },
+    {
+        "title": "WHAT A THIRD note!!!",
+        "text": "FUD",
+        "id": 3,
+        "date": "June 28th 2020, 11:57:17 am"
     }
 ]
