@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app",
-    "dev": "nodemon app"
+    "start": "node app"
   },
   "author": "Mark Anthony Patrick Rodriguez",
   "license": "ISC",
@@ -14,7 +13,5 @@
     "express": "^4.16.4",
     "moment": "^2.27.0"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.4"
-  }
+  "devDependencies": {}
 }
