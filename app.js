@@ -161,7 +161,7 @@ APP.route("/api/notes/:id")
         noteArry = [];
 
         FS.readFile("./db/db.json", "utf8", (err, data) => {
-            if (err) {console.log("ERROR --> ", + err);}
+            if (err) { console.log("ERROR --> ", + err); }
 
             let db = JSON.parse(data);
 
@@ -175,7 +175,7 @@ APP.route("/api/notes/:id")
                 })
 
                 FS.writeFile("./db/db.json", JSON.stringify(updatedNoteArry), (err, data) => {
-                    if (err) {console.log("ERROR --> ", + err);}
+                    if (err) { console.log("ERROR --> ", + err); }
                     res.status(200).json({ msg: "Note was deleted!" });
                 })
 
@@ -183,7 +183,7 @@ APP.route("/api/notes/:id")
                 res.status(201).json({ msg: "Note ID  was not found!" });
             }
         })
-      
+
     })
 
 APP.listen(SERV_PORT, (req, res) => {
