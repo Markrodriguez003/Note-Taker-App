@@ -43,7 +43,7 @@ APP.get("/:urlTerm", (req, res) => {
             break;
     }
 });
-
+// 
 APP
     .route("/api/notes")
     .get((req, res) => {
