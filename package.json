@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "nodemon",
     "start": "node app",
     "dev": "nodemon app"
   },
@@ -18,5 +19,3 @@
     "nodemon": "^2.0.4"
   }
 }
-
-
